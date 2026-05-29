@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.pytest_cache/
+*.egg-info/
+.DS_Store
+
+# Raw per-run benchmark JSON (regenerate with `infsvc sweep`). Curated artifacts
+# (comparison.md, *.png) under results/ may be committed by hand.
+results/runs/

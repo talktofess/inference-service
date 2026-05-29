@@ -1,0 +1,11 @@
+# Gateway + benchmark harness (CPU). Runs the mock backend and fronts a remote
+# engine. No torch/vllm here — that's the GPU image.
+FROM python:3.12-slim
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY infsvc ./infsvc
+
+EXPOSE 8080
+CMD ["uvicorn", "infsvc.gateway.app:app", "--host", "0.0.0.0", "--port", "8080"]

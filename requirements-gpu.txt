@@ -1,0 +1,9 @@
+# GPU-only dependencies for the real serving backends (Layers 0-3, 6).
+# Install on a Linux box / WSL2 with an NVIDIA GPU:  pip install -r requirements-gpu.txt
+# vLLM is Linux-first and pulls a matching torch build.
+torch>=2.3
+transformers>=4.44
+accelerate>=0.33
+vllm>=0.6.0
+autoawq>=0.2.5      # AWQ quantization
+optimum>=1.21

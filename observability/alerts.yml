@@ -1,0 +1,21 @@
+groups:
+  - name: inference-slo
+    rules:
+      - alert: HighP99Latency
+        expr: histogram_quantile(0.99, sum(rate(infsvc_request_latency_ms_bucket[1m])) by (le)) > 5000
+        for: 2m
+        labels: { severity: warning }
+        annotations:
+          summary: "p99 request latency above 5s"
+      - alert: HighInflightQueue
+        expr: infsvc_inflight_requests > 50
+        for: 1m
+        labels: { severity: warning }
+        annotations:
+          summary: "In-flight request queue depth above 50"
+      - alert: ErrorRateElevated
+        expr: sum(rate(infsvc_requests_total{status="error"}[1m])) > 0.5
+        for: 2m
+        labels: { severity: critical }
+        annotations:
+          summary: "Backend error rate elevated"

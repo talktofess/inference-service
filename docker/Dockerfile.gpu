@@ -1,0 +1,19 @@
+# Real vLLM engine (GPU). Build/run on a Linux host with the NVIDIA container
+# runtime. Serves an OpenAI-compatible API on :8000 that the gateway points at
+# via INFSVC_VLLM_URL.
+#
+# Simplest path is to use vLLM's official image directly:
+#   docker run --gpus all -p 8000:8000 vllm/vllm-openai:latest --model <hf-model>
+#
+# This Dockerfile shows the equivalent explicit build.
+FROM nvidia/cuda:12.4.1-runtime-ubuntu22.04
+
+RUN apt-get update && apt-get install -y python3 python3-pip && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY requirements.txt requirements-gpu.txt ./
+RUN pip3 install --no-cache-dir -r requirements.txt -r requirements-gpu.txt
+
+EXPOSE 8000
+# Override MODEL at runtime: docker run ... -e MODEL=Qwen/Qwen2.5-1.5B-Instruct
+ENV MODEL=Qwen/Qwen2.5-1.5B-Instruct
+CMD ["sh", "-c", "python3 -m vllm.entrypoints.openai.api_server --model $MODEL --port 8000"]

@@ -1,0 +1,4 @@
+# Minimal deps for the offline test suite (cost model, metrics, mock backend,
+# benchmark smoke). No GPU, no API key, no heavy ML libs.
+pydantic>=2.7
+pytest>=8.2
